@@ -1,0 +1,661 @@
+<!-- <!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>face-two</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html> -->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/facemask.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FaceVersusFace — Biometric Face Comparison</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Barlow:ital,wght@0,300;0,400;0,500;1,300&family=Barlow+Condensed:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div class="scanlines" aria-hidden="true"></div>
+
+    <!-- HEADER -->
+    <header class="site-header">
+      <div class="container header-inner">
+        <div class="logo">
+          <span class="logo-hex">⬡</span>
+          <div>
+            <span class="logo-name">FACE<strong>VERSUS</strong>FACE</span>
+            <span class="logo-sub">BIOMETRIC ANALYSIS v2.1</span>
+          </div>
+        </div>
+        <nav class="header-nav">
+          <a href="#tool">Analyser</a>
+          <a href="#how-it-works">Protocol</a>
+          <a href="#faq">FAQ</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-grid" aria-hidden="true"></div>
+      <div class="container hero-content">
+        <div class="hero-tag">
+          100% CLIENT-SIDE &nbsp;·&nbsp; NO DATA UPLOADED &nbsp;·&nbsp; FREE
+        </div>
+        <h1 class="hero-title">
+          Facial<br /><em>Biometric</em><br />Comparison
+        </h1>
+        <p class="hero-desc">
+          Advanced 68-point landmark detection and structural geometry analysis
+          — powered entirely by your browser. No APIs. No subscriptions. No data
+          leaves your device.
+        </p>
+        <a href="#tool" class="btn btn-primary hero-cta">[ Begin Analysis ]</a>
+      </div>
+    </section>
+
+    <!-- AD: Leaderboard top (728×90) -->
+    <div class="ad-slot ad-leaderboard" aria-label="Advertisement">
+      <span class="ad-label">ADVERTISEMENT</span>
+      <!--
+        Replace this comment with your ad network tag, e.g. Google AdSense:
+        <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXX"
+             data-ad-slot="XXXX" data-ad-format="auto" data-full-width-responsive="true"></ins>
+        <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+      -->
+    </div>
+
+    <!-- MAIN TOOL -->
+    <main class="tool-section" id="tool">
+      <div class="container">
+        <!-- Model loading status -->
+        <div class="model-status" id="modelStatus">
+          <div class="status-row">
+            <span class="status-dot" id="statusDot"></span>
+            <span class="mono" id="statusText"
+              >Initialising face detection models…</span
+            >
+          </div>
+          <div class="progress-track">
+            <div
+              class="progress-fill"
+              id="progressFill"
+              style="width: 0%"
+            ></div>
+          </div>
+        </div>
+
+        <!-- Upload panels -->
+        <div class="upload-grid">
+          <!-- Subject A -->
+          <div class="face-panel">
+            <div class="panel-tag">SUBJECT — A</div>
+            <div
+              class="drop-zone"
+              id="dropA"
+              tabindex="0"
+              role="button"
+              aria-label="Subject A: click or drag an image here"
+            >
+              <canvas class="face-canvas" id="canvasA" hidden></canvas>
+              <div class="drop-placeholder" id="placeholderA">
+                <svg
+                  class="drop-icon"
+                  viewBox="0 0 72 72"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <rect
+                    x="10"
+                    y="10"
+                    width="52"
+                    height="52"
+                    rx="2"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-dasharray="5 4"
+                  />
+                  <path
+                    d="M36 26v20M26 36h20"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                  />
+                  <circle
+                    cx="22"
+                    cy="22"
+                    r="3.5"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  />
+                  <circle
+                    cx="50"
+                    cy="22"
+                    r="3.5"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  />
+                  <circle
+                    cx="22"
+                    cy="50"
+                    r="3.5"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  />
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="3.5"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  />
+                </svg>
+                <div style="margin: 0 auto">
+                  <p class="drop-hint">Drop image here or tap to upload</p>
+                  <p class="drop-sub">JPG · PNG · WebP</p>
+                </div>
+              </div>
+            </div>
+            <div class="panel-actions">
+              <label class="btn btn-outline" for="fileA">↑ Upload</label>
+              <input
+                type="file"
+                id="fileA"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                class="sr-only"
+              />
+              <button class="btn btn-outline" id="selfieA">⊙ Selfie</button>
+              <button class="btn btn-ghost" id="clearA" hidden>✕ Clear</button>
+            </div>
+            <div class="face-badge" id="badgeA" hidden>
+              <span id="ageGenderA" class="mono"></span>
+              <span class="badge-dot">·</span>
+              <span id="expressionA" class="mono"></span>
+            </div>
+          </div>
+
+          <!-- VS column -->
+          <div class="vs-col" aria-hidden="true">
+            <div class="vs-line"></div>
+            <span class="vs-label">VS</span>
+            <div class="vs-line"></div>
+          </div>
+
+          <!-- Subject B -->
+          <div class="face-panel">
+            <div class="panel-tag">SUBJECT — B</div>
+            <div
+              class="drop-zone"
+              id="dropB"
+              tabindex="0"
+              role="button"
+              aria-label="Subject B: click or drag an image here"
+            >
+              <canvas class="face-canvas" id="canvasB" hidden></canvas>
+              <div class="drop-placeholder" id="placeholderB">
+                <svg
+                  class="drop-icon"
+                  viewBox="0 0 72 72"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden="true"
+                >
+                  <rect
+                    x="10"
+                    y="10"
+                    width="52"
+                    height="52"
+                    rx="2"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-dasharray="5 4"
+                  />
+                  <path
+                    d="M36 26v20M26 36h20"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                  />
+                  <circle
+                    cx="22"
+                    cy="22"
+                    r="3.5"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  />
+                  <circle
+                    cx="50"
+                    cy="22"
+                    r="3.5"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  />
+                  <circle
+                    cx="22"
+                    cy="50"
+                    r="3.5"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  />
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="3.5"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  />
+                </svg>
+                <div style="margin: 0 auto">
+                  <p class="drop-hint">Drop image here or tap to upload</p>
+                  <p class="drop-sub">JPG · PNG · WebP</p>
+                </div>
+              </div>
+            </div>
+            <div class="panel-actions">
+              <label class="btn btn-outline" for="fileB">↑ Upload</label>
+              <input
+                type="file"
+                id="fileB"
+                accept="image/jpeg,image/png,image/webp,image/gif"
+                class="sr-only"
+              />
+              <button class="btn btn-outline" id="selfieB">⊙ Selfie</button>
+              <button class="btn btn-ghost" id="clearB" hidden>✕ Clear</button>
+            </div>
+            <div class="face-badge" id="badgeB" hidden>
+              <span id="ageGenderB" class="mono"></span>
+              <span class="badge-dot">·</span>
+              <span id="expressionB" class="mono"></span>
+            </div>
+          </div>
+        </div>
+        <!-- /upload-grid -->
+
+        <!-- Camera modal -->
+        <div
+          class="camera-modal"
+          id="cameraModal"
+          hidden
+          role="dialog"
+          aria-modal="true"
+          aria-label="Camera selfie capture"
+        >
+          <div class="camera-box">
+            <div class="camera-header">
+              <span class="mono camera-title">// CAPTURE SUBJECT</span>
+              <button
+                class="btn-icon"
+                id="closeCamera"
+                aria-label="Close camera"
+              >
+                ✕
+              </button>
+            </div>
+            <div class="camera-viewport">
+              <video id="cameraFeed" autoplay playsinline muted></video>
+              <div class="reticle" aria-hidden="true">
+                <b></b><b></b><b></b><b></b>
+              </div>
+            </div>
+            <canvas id="captureCanvas" hidden></canvas>
+            <div class="camera-footer">
+              <button class="btn btn-primary" id="snapPhoto">⬤ CAPTURE</button>
+              <button class="btn btn-ghost" id="cancelCamera">CANCEL</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Analyse button -->
+        <div class="analyse-row">
+          <button class="btn btn-primary btn-analyse" id="analyseBtn" disabled>
+            <svg
+              id="btnIco"
+              class="btn-ico"
+              width="17"
+              height="17"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              aria-hidden="true"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <!-- <svg
+              id="btnSpinner"
+              class="btn-ico"
+              width="17"
+              height="17"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.2"
+              aria-hidden="true"
+              hidden
+            >
+              <path
+                d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"
+              />
+            </svg> -->
+            <span id="btnLabel">RUN ANALYSIS</span>
+          </button>
+          <p class="analyse-note mono">
+            All processing runs locally in your browser — zero data transmitted
+          </p>
+        </div>
+
+        <!-- Error bar -->
+        <div class="error-bar" id="errorBar" hidden role="alert">
+          <span>⚠</span> <span id="errorMsg"></span>
+        </div>
+
+        <!-- AD: Rectangle mid (300×250) -->
+        <div class="ad-slot ad-rectangle" aria-label="Advertisement">
+          <span class="ad-label">ADVERTISEMENT</span>
+          <!-- Replace with your ad tag -->
+        </div>
+
+        <!-- RESULTS -->
+        <section class="results" id="results" hidden aria-live="polite">
+          <div class="results-header">
+            <div>
+              <span class="results-tag mono">// ANALYSIS COMPLETE</span>
+              <h2 class="results-title">Biometric Report</h2>
+            </div>
+            <button class="btn btn-ghost" id="resetBtn">↺ Reset</button>
+          </div>
+
+          <!-- Overall score -->
+          <div class="score-card">
+            <div class="score-label mono">STRUCTURAL SIMILARITY INDEX</div>
+            <div class="score-row">
+              <span class="score-value" id="scoreValue">—</span>
+              <span class="score-pct">%</span>
+              <span class="score-verdict" id="scoreVerdict"></span>
+            </div>
+            <div class="score-track">
+              <div class="score-fill" id="scoreFill" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <!-- Resemblance card -->
+          <div class="resemblance-card" id="resemblanceCard">
+            <div class="resemblance-half">
+              <div class="resemblance-label">FACE DESCRIPTOR RESEMBLANCE</div>
+              <div class="resemblance-score-row">
+                <span class="resemblance-value" id="resemblanceValue">—</span>
+                <span class="resemblance-pct">%</span>
+              </div>
+              <span class="resemblance-badge" id="resemblanceBadge"></span>
+              <div class="resemblance-track">
+                <div
+                  class="resemblance-fill"
+                  id="resemblanceFill"
+                  style="width: 0%"
+                ></div>
+              </div>
+            </div>
+            <div class="resemblance-divider" aria-hidden="true"></div>
+            <div class="resemblance-half">
+              <div class="resemblance-label">WHAT THIS MEANS</div>
+              <p class="resemblance-desc" id="resemblanceDesc"></p>
+            </div>
+          </div>
+
+          <!-- Share bar -->
+          <div class="share-bar" id="shareBar">
+            <span class="share-label">Share results:</span>
+            <a
+              class="btn-share btn-share-x"
+              id="shareX"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Share on X / Twitter"
+            >
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"
+                />
+              </svg>
+              Share on X
+            </a>
+            <a
+              class="btn-share btn-share-wa"
+              id="shareWa"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Share on WhatsApp"
+            >
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path
+                  d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+                />
+              </svg>
+              Share on WhatsApp
+            </a>
+          </div>
+
+          <!-- Metrics grid -->
+          <div class="metrics-grid" id="metricsGrid"></div>
+
+          <!-- Landmark overlays -->
+          <div class="overlay-row">
+            <div class="overlay-item">
+              <p class="overlay-label mono">SUBJECT A · 68-pt landmarks</p>
+              <canvas id="overlayA" class="overlay-canvas"></canvas>
+            </div>
+            <div class="overlay-item">
+              <p class="overlay-label mono">SUBJECT B · 68-pt landmarks</p>
+              <canvas id="overlayB" class="overlay-canvas"></canvas>
+            </div>
+          </div>
+
+          <!-- Text breakdown -->
+          <div class="breakdown" id="breakdown"></div>
+
+          <p class="disclaimer">
+            ⚠ Geometric analysis only. Not a biometric identification system. Do
+            not use for identity verification. Always obtain consent before
+            uploading photos of others.
+          </p>
+        </section>
+      </div>
+    </main>
+
+    <!-- HOW IT WORKS -->
+    <section class="how-section" id="how-it-works">
+      <div class="container">
+        <p class="section-eyebrow mono">// PROTOCOL</p>
+        <h2 class="section-title">Three steps. Zero servers.</h2>
+        <div class="steps-row">
+          <div class="step">
+            <div class="step-num">01</div>
+            <h3>Load two faces</h3>
+            <p>
+              Upload images from your device or take a live selfie. All images
+              stay in your browser's memory — nothing is saved or sent.
+            </p>
+          </div>
+          <div class="step-arrow" aria-hidden="true">→</div>
+          <div class="step">
+            <div class="step-num">02</div>
+            <h3>Local detection</h3>
+            <p>
+              face-api.js runs TensorFlow.js models in-browser to detect
+              68-point landmarks, estimate age and gender, and score seven
+              expressions.
+            </p>
+          </div>
+          <div class="step-arrow" aria-hidden="true">→</div>
+          <div class="step">
+            <div class="step-num">03</div>
+            <h3>Geometry report</h3>
+            <p>
+              Structural ratios, inter-landmark distances, symmetry index,
+              expression profiles, and estimated demographics are compared and
+              scored.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- AD: Leaderboard mid -->
+    <div class="ad-slot ad-leaderboard" aria-label="Advertisement">
+      <span class="ad-label">ADVERTISEMENT</span>
+    </div>
+
+    <!-- FAQ -->
+    <section class="faq-section" id="faq">
+      <div class="container">
+        <p class="section-eyebrow mono">// FAQ</p>
+        <h2 class="section-title">Frequently asked questions</h2>
+        <div class="faq-list">
+          <details class="faq-item">
+            <summary>Does this upload my photos anywhere?</summary>
+            <p>
+              No. FaceVersusFace runs entirely in your browser using WebAssembly
+              and TensorFlow.js. Your images are processed locally and never
+              transmitted to any server. Close the tab and everything is gone.
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>What technology powers the face detection?</summary>
+            <p>
+              <strong>face-api.js</strong> wraps TensorFlow.js models trained
+              for face detection (SSD MobileNet v1), 68-point facial landmark
+              detection, age &amp; gender estimation, and expression
+              recognition. All models run client-side via WebAssembly.
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>What does the similarity score actually measure?</summary>
+            <p>
+              The score is a weighted composite of geometric ratios from 68
+              facial landmarks: eye aspect ratio, face width-to-height, jaw
+              width, nose bridge length, inter-eye distance, mouth width,
+              eyebrow arch, and face symmetry. It does not use deep face
+              embeddings — it is purely geometric.
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>Why does the page need to download models first?</summary>
+            <p>
+              face-api.js ships pre-trained neural network weights (~6 MB total)
+              fetched once from a CDN on first load. After that, all inference
+              runs locally. Weights are cached by your browser so subsequent
+              visits are instant.
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>What photos work best?</summary>
+            <p>
+              Front-facing, evenly lit photos with the face clearly visible
+              produce the most accurate results. Avoid extreme angles, heavy
+              filters, dark lighting, or sunglasses. JPEG, PNG, WebP, and GIF
+              are all supported.
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>Is this an identity verification system?</summary>
+            <p>
+              Absolutely not. FaceVersusFace is an entertainment tool based on
+              geometric ratios. It cannot reliably identify, match, or verify
+              anyone's identity. Do not use it for any decision-making related
+              to access, security, or personal rights.
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>Does it work on mobile?</summary>
+            <p>
+              Yes. The interface is fully responsive and the camera capture uses
+              the native device camera. Inference may be slower on older devices
+              but will work.
+            </p>
+          </details>
+          <details class="faq-item">
+            <summary>Do I need an API key or account?</summary>
+            <p>
+              No. FaceVersusFace uses only open-source software (face-api.js,
+              TensorFlow.js) and CDN-hosted model weights. There are no API
+              keys, no subscriptions, and no cost whatsoever.
+            </p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- AD: Leaderboard bottom -->
+    <div class="ad-slot ad-leaderboard" aria-label="Advertisement">
+      <span class="ad-label">ADVERTISEMENT</span>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div class="footer-brand">
+          <span class="logo-hex small">⬡</span>
+          <span class="footer-name">FACE<strong>VERSUS</strong>FACE</span>
+        </div>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="/privacy-policy.html">Privacy Policy</a>
+          <a href="/terms.html">Terms of Use</a>
+          <a href="/about.html">About</a>
+          <!-- <a href="/contact.html">Contact</a> -->
+        </nav>
+        <!-- <p class="footer-copy">
+          &copy; 2026 FaceSyn &nbsp;·&nbsp; For entertainment only &nbsp;·&nbsp;
+          Not a biometric identification system<br />
+          Built with
+          <a
+            href="https://github.com/justadudewhohacks/face-api.js"
+            target="_blank"
+            rel="noopener"
+            >face-api.js</a
+          >
+          &amp; TensorFlow.js — all processing in-browser
+        </p> -->
+        <p class="footer-copy">
+          &copy; 2026 FaceVersusFace &nbsp;·&nbsp; For entertainment only
+          &nbsp;·&nbsp; Not a biometric identification system<br />
+          Created by
+          <a href="https://occiandiaali.com" target="_blank" rel="noopener"
+            >Occian F Diaali</a
+          >
+          with TensorFlow.js — all processing in-browser
+        </p>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
