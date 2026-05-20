@@ -1533,6 +1533,11 @@ body {
   flex-shrink: 0;
 }
 
+/* ---- Privacy & Terms ------- */
+.privacy-terms-div {
+  padding: 5rem 0;
+}
+
 /* ─── FAQ ───────────────────────────────────────────────────────────── */
 .faq-section {
   padding: 5rem 0;
