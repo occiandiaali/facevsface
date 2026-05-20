@@ -782,7 +782,8 @@ body {
 
 .drop-hint {
   font-size: 0.8rem;
-  color: var(--text-dim);
+  /* color: var(--text-dim); */
+  color: yellow;
   /* margin-right: 10rem; */
 }
 
@@ -790,7 +791,8 @@ body {
   font-family: var(--mono);
   font-size: 0.6rem;
   letter-spacing: 0.12em;
-  color: var(--text-dim);
+  /* color: var(--text-dim); */
+  color: yellowgreen;
   opacity: 0.5;
   /* margin-right: 10rem; */
 }

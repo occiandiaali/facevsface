@@ -415,7 +415,7 @@ function setLoading(on) {
   analyseBtn.disabled = on;
   btnIco.hidden = on;
   //btnSpinner.hidden = !on;
-  btnSpinner.hidden = false;
+
   btnLabel.textContent = on ? "ANALYSING…" : "RUN ANALYSIS";
 }
 
@@ -689,7 +689,7 @@ function renderResults(metrics, resA, resB) {
   }
 
   // ── Share links ───────────────────────────────────────────────────
-  const shareText = `I just compared two faces with FaceLab — structural similarity ${pct}%, resemblance ${resemblanceValue.textContent}%. Try it yourself!`;
+  const shareText = `I just compared two faces with FaceVersusFace — structural similarity ${pct}%, resemblance ${resemblanceValue.textContent}%. Try it yourself!`;
   const shareUrl = encodeURIComponent(window.location.href);
   const shareTxt = encodeURIComponent(shareText);
   shareX.href = `https://twitter.com/intent/tweet?text=${shareTxt}&url=${shareUrl}`;
@@ -792,7 +792,9 @@ function bottomMatches(items, n) {
 // ─── Reset ────────────────────────────────────────────────────────────
 $("resetBtn").addEventListener("click", () => {
   clearSide("A");
+  document.getElementById("fileA").value = null;
   clearSide("B");
+  document.getElementById("fileB").value = null;
   results.hidden = true;
   clearError();
   metricsGrid.innerHTML = "";
