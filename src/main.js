@@ -1,4 +1,4 @@
-import "./style.css";
+import "./styles.css";
 import * as faceapi from "@vladmandic/face-api";
 
 // ─── CDN path for model weights ──────────────────────────────────────
